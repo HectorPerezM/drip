@@ -2,7 +2,9 @@ CC=gcc
 INC_DIRS = -Iinclude/
 CFLAGS = -std=c++17 -c -Wall -Wextra -Werror
 
-all: clean mk obj/main.o obj/pipeline.o drip run
+test: clean mk obj/main.o obj/pipeline.o obj/reader.o obj/word.o obj/util.o drip run 
+
+all: clean mk obj/main.o obj/pipeline.o obj/reader.o obj/word.o obj/util.o drip
 
 drip:
 	@ gcc obj/*.o -lstdc++ -o bin/drip
@@ -13,6 +15,16 @@ obj/main.o: src/main.cpp
 
 obj/pipeline.o: src/pipeline/pipeline.cpp
 	@ $(CC)  $(CFLAGS) $(INC_DIRS) src/pipeline/pipeline.cpp -o obj/pipeline.o
+
+obj/reader.o: src/reader/reader.cpp
+	@ $(CC)  $(CFLAGS) $(INC_DIRS) src/reader/reader.cpp -o obj/reader.o
+
+obj/word.o: src/word/word.cpp src/word/wordData.cpp 
+	@ $(CC)  $(CFLAGS) $(INC_DIRS) src/word/word.cpp -o obj/word.o
+	@ $(CC)  $(CFLAGS) $(INC_DIRS) src/word/wordData.cpp -o obj/wordData.o
+
+obj/util.o: src/util/util.cpp
+	@ $(CC)  $(CFLAGS) $(INC_DIRS) src/util/util.cpp -o obj/util.o
 
 mk:
 	@ echo "Create bin/ obj/ folders."
@@ -25,4 +37,8 @@ clean:
 	@ rm -rf bin/
 
 run:
-	@ ./bin/drip
+	@ ./bin/drip -q ./data/Queries.dat \
+				-i ./data/Index \
+				-w ./data/Words.dat \
+				-r 1 \
+				-s 1

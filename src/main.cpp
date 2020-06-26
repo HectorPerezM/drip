@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "pipeline/pipeline.hpp"
+#include "util/util.hpp"
 
 using namespace std;
 
@@ -10,13 +11,17 @@ using namespace std;
   Options:
     
 */
-int main() {
+int main(int argc, char **argv) {
     system("clear");
 
     cout << "Drip is running ..." << endl;
     cout << endl;
+    
+    Util u;
+    if(!u.getParamters(argc, argv))
+        return EXIT_FAILURE;
 
-    Pipeline p;
+    Pipeline p(u.iflag, u.wflag, u.qflag);
     if(!p.start())
         return EXIT_FAILURE;
 

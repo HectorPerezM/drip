@@ -4,26 +4,34 @@
 bool Pipeline::loadData() {
     cout << "   [loadData]" << endl;
 
+    /* Load Word File */
+    if(!this->reader.readWordsFile(&this->words, this->wordFilePath)) {
+        cout << "Failed to load data from Word file." << endl;
+        return false;
+    }
+    this->words.display(26);
+
     return true;
 }
 
 /* Public Methods */
-Pipeline::Pipeline() {}
+Pipeline::Pipeline(string iflag, string wflag, string qflag) {
+    this->indexFilePath = iflag;
+    this->wordFilePath = wflag;
+    this->queryFilePath = qflag;
+}
 
 Pipeline::~Pipeline() {
 }
 
 bool Pipeline::start() {
-    cout << endl;
-    cout << "Start Pipeline" << endl;
-    cout << endl;
+    cout << "[start]" << endl;
 
+    //Load word, queries and index files
     if(!this->loadData())
         return false;
 
-
+    //Ranks
     
-    cout << endl;
-    cout << "Pipeline finished sucessfully." << endl;
     return true;
 }
